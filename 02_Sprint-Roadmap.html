@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K-Vibe Tracker – Sprint 개발 로드맵</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: #F0F4F8;
+    color: #1E293B;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .page { max-width: 980px; margin: 0 auto; padding: 48px 40px; }
+
+  /* Cover */
+  .cover {
+    background: linear-gradient(135deg, #0F2044 0%, #1D4ED8 55%, #7C3AED 100%);
+    color: white;
+    padding: 56px 52px;
+    border-radius: 18px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::after {
+    content: '';
+    position: absolute; top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+  }
+  .cover .tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 4px 16px;
+    border-radius: 20px;
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.06em;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  .cover h1 { font-size: 34px; font-weight: 700; margin-bottom: 12px; }
+  .cover .sub { font-size: 15px; opacity: 0.8; }
+  .cover-meta {
+    display: flex; gap: 28px; margin-top: 32px;
+    padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.2);
+    flex-wrap: wrap;
+  }
+  .cover-meta div { font-size: 12px; opacity: 0.65; }
+  .cover-meta strong { display: block; font-size: 14px; opacity: 1; margin-top: 3px; }
+
+  /* Section Headers */
+  h2 {
+    font-size: 21px; font-weight: 700; color: #1D4ED8;
+    margin: 44px 0 16px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #1D4ED8;
+    display: flex; align-items: center; gap: 10px;
+  }
+  p { margin-bottom: 10px; color: #374151; }
+
+  /* Legend */
+  .legend {
+    display: flex; gap: 14px; flex-wrap: wrap;
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 32px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #475569; }
+
+  /* Sprint Cards */
+  .sprint-card {
+    background: white;
+    border-radius: 14px;
+    border: 1px solid #E2E8F0;
+    margin-bottom: 28px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .sprint-header {
+    padding: 18px 22px;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    background: #F8FAFC;
+    border-bottom: 2px solid #E2E8F0;
+  }
+  .sprint-number {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 800;
+    flex-shrink: 0;
+  }
+  .sn-0 { background: #E0E7FF; color: #3730A3; }
+  .sn-1 { background: #DCFCE7; color: #166534; }
+  .sn-2 { background: #FEF3C7; color: #92400E; }
+  .sn-3 { background: #FFE4E6; color: #9F1239; }
+  .sn-4 { background: #EDE9FE; color: #5B21B6; }
+  .sn-5 { background: #FCE7F3; color: #9D174D; }
+  .sn-6 { background: #CFFAFE; color: #155E75; }
+  .sn-7 { background: #F3F4F6; color: #374151; }
+
+  .sprint-info { flex: 1; min-width: 200px; }
+  .sprint-title { font-size: 17px; font-weight: 700; color: #1E293B; }
+  .sprint-subtitle { font-size: 12px; color: #64748B; margin-top: 2px; }
+
+  .sprint-meta { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .meta-chip {
+    padding: 3px 10px; border-radius: 12px;
+    font-size: 11px; font-weight: 600; white-space: nowrap;
+  }
+  .chip-week { background: #1D4ED8; color: white; }
+  .chip-easy { background: #DCFCE7; color: #15803D; }
+  .chip-med  { background: #FEF3C7; color: #B45309; }
+  .chip-hard { background: #FEE2E2; color: #DC2626; }
+  .chip-core { background: #7C3AED; color: white; }
+
+  /* Goal bar */
+  .goal-bar {
+    padding: 10px 22px;
+    background: #EFF6FF;
+    border-bottom: 1px solid #DBEAFE;
+    font-size: 13px;
+    color: #1E40AF;
+    display: flex; align-items: flex-start; gap: 8px;
+  }
+  .goal-bar .goal-label {
+    font-weight: 700; white-space: nowrap; color: #1D4ED8;
+  }
+
+  /* Stack tags */
+  .stack-bar {
+    padding: 8px 22px;
+    background: #FAFBFD;
+    border-bottom: 1px solid #F1F5F9;
+    display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+  }
+  .stack-label { font-size: 11px; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.05em; }
+  .stack-tag {
+    font-size: 11px; font-weight: 600;
+    padding: 2px 8px; border-radius: 6px;
+    background: #F1F5F9; color: #475569;
+    border: 1px solid #E2E8F0;
+  }
+
+  /* Task Table */
+  table { width: 100%; border-collapse: collapse; }
+  table thead tr { background: #F8FAFC; }
+  table th {
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 11px; font-weight: 700;
+    color: #64748B;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    border-bottom: 1px solid #E2E8F0;
+  }
+  table td {
+    padding: 11px 14px;
+    font-size: 13px;
+    color: #374151;
+    border-top: 1px solid #F1F5F9;
+    vertical-align: top;
+  }
+  table tr:hover td { background: #FAFBFD; }
+  .task-name { font-weight: 500; color: #1E293B; margin-bottom: 3px; }
+  .task-note { font-size: 12px; color: #64748B; line-height: 1.5; }
+  .task-note code {
+    font-family: monospace; font-size: 11px;
+    background: #F1F5F9; padding: 1px 5px; border-radius: 4px;
+    color: #475569;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 9px; border-radius: 10px;
+    font-size: 11px; font-weight: 700;
+    white-space: nowrap;
+  }
+  .badge-easy { background: #DCFCE7; color: #15803D; }
+  .badge-med  { background: #FEF3C7; color: #B45309; }
+  .badge-hard { background: #FEE2E2; color: #DC2626; }
+
+  /* Done / Risk boxes */
+  .footer-boxes { display: flex; gap: 12px; padding: 14px 22px; flex-wrap: wrap; }
+  .done-box {
+    flex: 1; min-width: 200px;
+    background: #EFF6FF;
+    border-left: 4px solid #1D4ED8;
+    padding: 10px 14px;
+    border-radius: 0 8px 8px 0;
+    font-size: 12px; color: #1E3A5F; font-weight: 600;
+  }
+  .done-box .box-title { font-size: 11px; color: #93C5FD; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+  .risk-box {
+    flex: 1; min-width: 200px;
+    background: #FFF7ED;
+    border-left: 4px solid #F59E0B;
+    padding: 10px 14px;
+    border-radius: 0 8px 8px 0;
+    font-size: 12px; color: #78350F;
+  }
+  .risk-box .box-title { font-size: 11px; color: #FCD34D; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; font-weight: 700; }
+  .dep-box {
+    flex: 1; min-width: 160px;
+    background: #F5F3FF;
+    border-left: 4px solid #7C3AED;
+    padding: 10px 14px;
+    border-radius: 0 8px 8px 0;
+    font-size: 12px; color: #4C1D95;
+  }
+  .dep-box .box-title { font-size: 11px; color: #C4B5FD; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; font-weight: 700; }
+
+  /* Timeline */
+  .timeline {
+    background: #1E293B;
+    color: white;
+    border-radius: 14px;
+    padding: 28px 32px;
+    margin: 24px 0;
+    font-size: 13px;
+    line-height: 1;
+  }
+  .tl-grid { display: grid; grid-template-columns: 100px 1fr 1fr; gap: 0; }
+  .tl-head {
+    font-size: 10px; font-weight: 700; color: #64748B;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    padding: 0 0 14px;
+    border-bottom: 1px solid #334155;
+    margin-bottom: 14px;
+  }
+  .tl-row { display: contents; }
+  .tl-row > div {
+    padding: 9px 0;
+    border-bottom: 1px solid #1E2D3D;
+    display: flex; align-items: center;
+  }
+  .tl-week { color: #93C5FD; font-weight: 700; font-size: 13px; }
+  .tl-sprint { color: #CBD5E1; }
+  .tl-feature { color: #94A3B8; font-size: 12px; }
+  .tl-highlight .tl-sprint { color: #FCD34D; font-weight: 700; }
+  .tl-highlight .tl-feature { color: #FBBF24; }
+  .tl-total { margin-top: 16px; padding-top: 14px; border-top: 1px solid #334155; color: #64748B; font-size: 12px; text-align: right; }
+
+  /* Progress bar visual */
+  .progress-row {
+    display: flex; gap: 0; margin: 20px 0 32px; border-radius: 10px; overflow: hidden;
+    height: 28px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  .progress-seg {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: white;
+    transition: flex .3s;
+  }
+  .ps-0 { background: #6366F1; flex: 1; }
+  .ps-1 { background: #22C55E; flex: 2; }
+  .ps-2 { background: #EAB308; flex: 2; }
+  .ps-3 { background: #EF4444; flex: 2; }
+  .ps-4 { background: #8B5CF6; flex: 2; }
+  .ps-5 { background: #EC4899; flex: 2; }
+  .ps-6 { background: #06B6D4; flex: 2; }
+  .ps-7 { background: #94A3B8; flex: 2; }
+
+  /* MVP box */
+  .mvp-box {
+    background: linear-gradient(135deg, #ECFDF5, #D1FAE5);
+    border: 2px solid #10B981;
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin: 24px 0;
+  }
+  .mvp-box h3 { color: #064E3B; font-size: 16px; margin-bottom: 12px; }
+  .mvp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .mvp-item {
+    background: white;
+    border: 1px solid #A7F3D0;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px; color: #065F46;
+  }
+  .mvp-item strong { display: block; font-weight: 700; color: #047857; margin-bottom: 2px; }
+
+  /* Cost estimate */
+  .cost-table {
+    background: white; border: 1px solid #E2E8F0;
+    border-radius: 12px; overflow: hidden;
+    margin: 16px 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .cost-table table th { background: #F8FAFC; }
+  .cost-total td { background: #EFF6FF !important; font-weight: 700; color: #1D4ED8 !important; }
+
+  @media print {
+    body { background: white; }
+    .page { padding: 20px; }
+    .sprint-card { break-inside: avoid; margin-bottom: 18px; }
+    .progress-row { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Cover -->
+  <div class="cover">
+    <div class="tag">K-Vibe Tracker &middot; 2026 관광데이터 공모전</div>
+    <h1>Agile Sprint 개발 로드맵</h1>
+    <p class="sub">기능 난이도 기반 순차 개발 &middot; 2주 1 Sprint &middot; 총 15주 (3.5개월) &middot; Incremental Delivery</p>
+    <div class="cover-meta">
+      <div><div>총 Sprint</div><strong>Sprint 0 ~ 7 (8단계)</strong></div>
+      <div><div>MVP 기준</div><strong>Sprint 0~4 (9주) 공모전 제출 가능</strong></div>
+      <div><div>개발 원칙</div><strong>각 Sprint 독립 배포 가능</strong></div>
+      <div><div>핵심 차별화</div><strong>Sprint 4·5·6 (AI 기능군)</strong></div>
+      <div><div>대상 플랫폼</div><strong>모바일 웹 (PWA) + 데스크탑</strong></div>
+    </div>
+  </div>
+
+  <!-- 진행 바 -->
+  <div class="progress-row">
+    <div class="progress-seg ps-0">S0</div>
+    <div class="progress-seg ps-1">S1</div>
+    <div class="progress-seg ps-2">S2</div>
+    <div class="progress-seg ps-3">S3</div>
+    <div class="progress-seg ps-4">S4★</div>
+    <div class="progress-seg ps-5">S5★</div>
+    <div class="progress-seg ps-6">S6★</div>
+    <div class="progress-seg ps-7">S7</div>
+  </div>
+
+  <!-- 난이도 기준 -->
+  <h2>난이도 분류 기준</h2>
+  <div class="legend">
+    <div class="legend-item">
+      <span class="badge badge-easy">쉬움</span>
+      <span>외부 API 단순 연동, 정적 UI 구성, 문서화된 라이브러리 활용</span>
+    </div>
+    <div class="legend-item">
+      <span class="badge badge-med">보통</span>
+      <span>복합 데이터 조합, 비동기 처리, 캐싱/인증 설계, 루트 계산</span>
+    </div>
+    <div class="legend-item">
+      <span class="badge badge-hard">어려움</span>
+      <span>AI 모델 프롬프트 엔지니어링, 멀티모달 처리, 실시간 위치 감지, TTS</span>
+    </div>
+  </div>
+
+  <!-- ─────────── Sprint 0 ─────────── -->
+  <div class="sprint-card">
+    <div class="sprint-header">
+      <div class="sprint-number sn-0">0</div>
+      <div class="sprint-info">
+        <div class="sprint-title">Sprint 0 — 기반 셋업</div>
+        <div class="sprint-subtitle">프로젝트 골격 · 인프라 · 인증 · CI/CD</div>
+      </div>
+      <div class="sprint-meta">
+        <span class="meta-chip chip-week">Week 1 (1주)</span>
+        <span class="meta-chip chip-easy">전체 쉬움</span>
+      </div>
+    </div>
+    <div class="goal-bar">
+      <span class="goal-label">목표</span>
+      개발 환경 구축. 아무것도 없어도 배포 가능한 뼈대를 만든다. 이후 모든 Sprint의 기반이 되는 인프라 완성.
+    </div>
+    <div class="stack-bar">
+      <span class="stack-label">기술 스택</span>
+      <span class="stack-tag">Next.js 14 (App Router)</span>
+      <span class="stack-tag">Supabase</span>
+      <span class="stack-tag">TailwindCSS</span>
+      <span class="stack-tag">shadcn/ui</span>
+      <span class="stack-tag">GitHub Actions</span>
+      <span class="stack-tag">Vercel</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:34%">작업 항목</th>
+          <th>구현 상세 / 노트</th>
+          <th style="width:72px; text-align:center;">난이도</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="task-name">Next.js 14 프로젝트 생성 + Vercel 배포 연동</div></td>
+          <td><div class="task-note"><code>npx create-next-app@latest</code> App Router 방식. <code>vercel link</code>로 저장소 연결. Preview 배포 URL 확인.</div></td>
+          <td style="text-align:center;"><span class="badge badge-easy">쉬움</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">Supabase 프로젝트 생성 + DB 스키마 마이그레이션</div></td>
+          <td><div class="task-note"><code>supabase init</code> + <code>supabase db push</code>. 초기 테이블: <code>users</code>, <code>places</code>, <code>routes</code>, <code>favorites</code>. RLS 기본 정책 설정.</div></td>
+          <td style="text-align:center;"><span class="badge badge-easy">쉬움</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">Supabase Auth (Google 소셜 로그인) 연동</div></td>
+          <td><div class="task-note">Google OAuth2 Client ID/Secret 발급 → Supabase Dashboard 설정. <code>@supabase/auth-helpers-nextjs</code> 미들웨어로 세션 관리. 로그인/로그아웃 UI 구현.</div></td>
+          <td style="text-align:center;"><span class="badge badge-easy">쉬움</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">GitHub Actions CI/CD 파이프라인 구성</div></td>
+          <td><div class="task-note"><code>main</code> 브랜치 push → ESLint + TypeScript 타입체크 → Vercel 자동 배포. <code>.github/workflows/ci.yml</code> 작성. Branch Protection Rule 설정.</div></td>
+          <td style="text-align:center;"><span class="badge badge-easy">쉬움</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">TailwindCSS + shadcn/ui 기본 세팅</div></td>
+          <td><div class="task-note">공통 컬러 토큰(primary, secondary) 정의. <code>Button</code>, <code>Card</code>, <code>Modal</code>, <code>Badge</code> 컴포넌트 추가. 다크모드 준비 (추후).</div></td>
+          <td style="text-align:center;"><span class="badge badge-easy">쉬움</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">환경변수 관리 구조 설계</div></td>
+          <td><div class="task-note"><code>.env.local</code> (로컬) / Vercel 환경변수 (Production/Preview 분리). <code>NEXT_PUBLIC_*</code> 클라이언트 노출 키 구분. <code>.env.example</code> 문서화.</div></td>
+          <td style="text-align:center;"><span class="badge badge-easy">쉬움</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="footer-boxes">
+      <div class="done-box">
+        <div class="box-title">완료 기준 (DoD)</div>
+        main 푸시 → GitHub Actions 통과 → Vercel 자동 배포 &amp; Google 로그인 화면 동작
+      </div>
+      <div class="dep-box">
+        <div class="box-title">다음 스프린트 의존성</div>
+        Sprint 1~7 전체가 이 Sprint의 인프라에 의존
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────── Sprint 1 ─────────── -->
+  <div class="sprint-card">
+    <div class="sprint-header">
+      <div class="sprint-number sn-1">1</div>
+      <div class="sprint-info">
+        <div class="sprint-title">Sprint 1 — 지도 + TourAPI 기본 POI</div>
+        <div class="sprint-subtitle">Feature 4 (Daily-Curation) 지도 기반 뷰 · 기본 POI 표시</div>
+      </div>
+      <div class="sprint-meta">
+        <span class="meta-chip chip-week">Week 2–3 (2주)</span>
+        <span class="meta-chip chip-med">일부 보통</span>
+      </div>
+    </div>
+    <div class="goal-bar">
+      <span class="goal-label">목표</span>
+      지도 위에 관광지 핀 표시 및 상세 정보 조회. 다국어 구조 기초 확립. TourAPI 캐싱으로 할당량 관리 시작.
+    </div>
+    <div class="stack-bar">
+      <span class="stack-label">기술 스택</span>
+      <span class="stack-tag">Kakao Maps JS API</span>
+      <span class="stack-tag">TourAPI v2</span>
+      <span class="stack-tag">Upstash Redis</span>
+      <span class="stack-tag">next-intl</span>
+      <span class="stack-tag">Next.js API Route</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:34%">작업 항목</th>
+          <th>구현 상세 / 노트</th>
+          <th style="width:72px; text-align:center;">난이도</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="task-name">Kakao Maps JS API 연동 + 현위치 표시</div></td>
+          <td><div class="task-note">Kakao Developers 앱 등록 → JS API Key 발급. <code>navigator.geolocation</code>으로 현위치 취득. 지도 중심 이동 + 현위치 마커. 모바일 권한 팝업 처리.</div></td>
+          <td style="text-align:center;"><span class="badge badge-easy">쉬움</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">TourAPI /areaBasedList → 주변 POI 조회 API Route</div></td>
+          <td><div class="task-note">Next.js <code>/api/places</code> Route 구현. 위경도 + 반경 파라미터로 TourAPI 호출. 응답 정규화 (id, name, lat, lng, category, imageUrl). 일 할당량: 10,000건.</div></td>
+          <td style="text-align:center;"><span class="badge badge-easy">쉬움</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">Redis (Upstash) 캐싱 레이어 적용</div></td>
+          <td><div class="task-note">위경도 그리드 단위 캐시 키 설계 (<code>places:37.5:127.0:r1000</code>). TTL 1시간. Cache-hit 로깅. Upstash 무료 플랜 (10,000 req/day) 활용.</div></td>
+          <td style="text-align:center;"><span class="badge badge-med">보통</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">장소 상세 모달 (이름, 주소, 운영시간, 이미지)</div></td>
+          <td><div class="task-note">핀 클릭 → <code>detailCommon</code> API 추가 호출 → 모달 표시. 이미지 없을 경우 기본 이미지 fallback. 모바일 bottom-sheet 스타일 적용.</div></td>
+          <td style="text-align:center;"><span class="badge badge-easy">쉬움</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">카테고리 필터 (음식점 / 카페 / 문화시설 / 숙소)</div></td>
+          <td><div class="task-note">TourAPI <code>contentTypeId</code> 기반 필터링 (12:관광지, 14:문화시설, 32:숙박, 39:음식점). 지도 하단 탭 UI. 다중 선택 지원.</div></td>
+          <td style="text-align:center;"><span class="badge badge-easy">쉬움</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">다국어(i18n) 기본 구조 세팅 (next-intl, en/ja/zh)</div></td>
+          <td><div class="task-note"><code>next-intl</code> 미들웨어 설정. <code>/messages/ko.json</code>, <code>en.json</code>, <code>ja.json</code>, <code>zh.json</code> 기본 키 정의. URL prefix: <code>/ko</code>, <code>/en</code> 등. 언어 전환 드롭다운 UI.</div></td>
+          <td style="text-align:center;"><span class="badge badge-med">보통</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="footer-boxes">
+      <div class="done-box">
+        <div class="box-title">완료 기준 (DoD)</div>
+        지도에서 주변 관광지 핀 클릭 → 상세 정보 모달 표시. 카테고리 필터 작동. 영어 전환 시 UI 텍스트 변경.
+      </div>
+      <div class="risk-box">
+        <div class="box-title">리스크</div>
+        TourAPI 일 할당량 소진 시 캐시 미스로 서비스 중단 → TTL 및 그리드 캐시 설계 필수
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────── Sprint 2 ─────────── -->
+  <div class="sprint-card">
+    <div class="sprint-header">
+      <div class="sprint-number sn-2">2</div>
+      <div class="sprint-info">
+        <div class="sprint-title">Sprint 2 — 편의시설 레이더 (Daily-Curation & Radar)</div>
+        <div class="sprint-subtitle">Feature 4 완성 · 화장실 · 코인노래방 · 팝업스토어 · FCM 알림</div>
+      </div>
+      <div class="sprint-meta">
+        <span class="meta-chip chip-week">Week 4–5 (2주)</span>
+        <span class="meta-chip chip-med">일부 보통</span>
+      </div>
+    </div>
+    <div class="goal-bar">
+      <span class="goal-label">목표</span>
+      현위치 반경 기반 화장실·편의시설 표시. 현재 열린 팝업스토어·행사 정보 제공. 도착 알림 FCM 연동.
+    </div>
+    <div class="stack-bar">
+      <span class="stack-label">기술 스택</span>
+      <span class="stack-tag">행안전부 공중화장실 API</span>
+      <span class="stack-tag">TourAPI (행사/팝업)</span>
+      <span class="stack-tag">Firebase Cloud Messaging</span>
+      <span class="stack-tag">Supabase (화장실 DB)</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:34%">작업 항목</th>
+          <th>구현 상세 / 노트</th>
+          <th style="width:72px; text-align:center;">난이도</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="task-name">행안전부 공중화장실 API 연동 + DB 적재</div></td>
+          <td><div class="task-note">공공데이터포털 API 키 발급. 전국 화장실 데이터 1회 Bulk 적재 → Supabase <code>restrooms</code> 테이블 (PostGIS 위경도 컬럼). 이후 API Route로 반경 조회.</div></td>
+          <td style="text-align:center;"><span class="badge badge-easy">쉬움</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">현위치 반경 500m 내 화장실 지도 표시</div></td>
+          <td><div class="task-note">Supabase PostGIS <code>ST_DWithin</code> 쿼리로 반경 필터. 화장실 전용 마커 아이콘(파란색). 지도 레이어 토글 버튼으로 ON/OFF.</div></td>
+          <td style="text-align:center;"><span class="badge badge-easy">쉬움</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">화장실 상세 정보 표시</div></td>
+          <td><div class="task-note">핀 클릭 시 상세: 공공/개방 여부, 24시간 운영 여부, 접근 방법(예: 지하 1층), 장애인 시설 유무. 모달 카드 UI.</div></td>
+          <td style="text-align:center;"><span class="badge badge-easy">쉬움</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">코인노래방 / 편의점 카테고리 TourAPI 연동</div></td>
+          <td><div class="task-note">TourAPI <code>areaBasedList</code> + 카테고리 코드 <code>CE7</code>(카페), <code>CS2</code>(편의점) 활용. 지도 레이어 분리. 반경 300m ~ 1km 조정 가능 슬라이더.</div></td>
+          <td style="text-align:center;"><span class="badge badge-easy">쉬움</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">현재 팝업스토어 / 행사 정보 TourAPI 연동</div></td>
+          <td><div class="task-note">TourAPI <code>searchFestival</code> API (기간 필터: 오늘 기준 진행 중). 결과 카드 리스트 UI (지도 하단 스크롤). 시작/종료일, 장소, 공식 URL 표시.</div></td>
+          <td style="text-align:center;"><span class="badge badge-med">보통</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">푸시 알림 기반 팝업 알림 (FCM 무료)</div></td>
+          <td><div class="task-note">Firebase 프로젝트 생성 → FCM 연동. 사용자 FCM 토큰 Supabase 저장. 관심 팝업스토어 즐겨찾기 → 종료 D-3일 전 자동 알림. Service Worker 등록 필요.</div></td>
+          <td style="text-align:center;"><span class="badge badge-med">보통</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="footer-boxes">
+      <div class="done-box">
+        <div class="box-title">완료 기준 (DoD)</div>
+        현위치에서 화장실/편의시설 레이더 동작. 진행 중인 팝업스토어 목록 조회. 즐겨찾기 팝업 알림 수신.
+      </div>
+      <div class="risk-box">
+        <div class="box-title">리스크</div>
+        FCM Service Worker 설정 복잡 → Web Push 대신 인앱 알림으로 fallback 준비
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────── Sprint 3 ─────────── -->
+  <div class="sprint-card">
+    <div class="sprint-header">
+      <div class="sprint-number sn-3">3</div>
+      <div class="sprint-info">
+        <div class="sprint-title">Sprint 3 — 혼잡도 + 루트 최적화 (Vibe-Route & Crowd Level)</div>
+        <div class="sprint-subtitle">Feature 3 완성 · 혼잡도 신호등 · 루트 생성 · 이동 시간 계산</div>
+      </div>
+      <div class="sprint-meta">
+        <span class="meta-chip chip-week">Week 6–7 (2주)</span>
+        <span class="meta-chip chip-med">주로 보통</span>
+      </div>
+    </div>
+    <div class="goal-bar">
+      <span class="goal-label">목표</span>
+      장소별 혼잡도 신호 표시 + 사용자가 직접 루트를 구성하고 예상 이동 시간을 확인할 수 있는 기능 완성.
+    </div>
+    <div class="stack-bar">
+      <span class="stack-label">기술 스택</span>
+      <span class="stack-tag">TourAPI (방문자 통계)</span>
+      <span class="stack-tag">Kakao Mobility API</span>
+      <span class="stack-tag">Supabase (routes, favorites)</span>
+      <span class="stack-tag">React DnD</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:34%">작업 항목</th>
+          <th>구현 상세 / 노트</th>
+          <th style="width:72px; text-align:center;">난이도</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="task-name">TourAPI 방문자 통계 데이터 수집 + DB 적재</div></td>
+          <td><div class="task-note">TourAPI <code>stayList</code> (숙박통계), 주요 POI 월별 방문자 수 적재. GitHub Actions Cron (매주 일요일) 자동 수집. <code>crowd_stats</code> 테이블 설계 (place_id, dayofweek, hour, level).</div></td>
+          <td style="text-align:center;"><span class="badge badge-med">보통</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">요일/시간대 기반 혼잡도 예측 로직 (통계 기반)</div></td>
+          <td><div class="task-note">현재 요일+시간대 → DB 조회 → 하위 33% = 여유(녹), 중간 = 보통(황), 상위 33% = 혼잡(적). 실시간 데이터 없을 경우 평균값 fallback. 1시간 캐시.</div></td>
+          <td style="text-align:center;"><span class="badge badge-med">보통</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">지도 핀에 혼잡도 신호등 (녹/황/적) 표시</div></td>
+          <td><div class="task-note">커스텀 마커 오버레이로 신호등 색상 적용. 핀 하단에 혼잡도 텍스트 ("여유", "보통", "혼잡"). 클릭 시 상세 모달에 시간대별 혼잡도 차트 표시.</div></td>
+          <td style="text-align:center;"><span class="badge badge-easy">쉬움</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">장소 즐겨찾기 → 루트 생성 (순서 드래그)</div></td>
+          <td><div class="task-note">즐겨찾기 장소 목록 → "루트 만들기" 진입. <code>react-beautiful-dnd</code>로 순서 드래그. 최대 10개 장소. 루트 Supabase 저장 (<code>routes</code> 테이블).</div></td>
+          <td style="text-align:center;"><span class="badge badge-med">보통</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">TourAPI 인증 숙소 / 맛집 연결</div></td>
+          <td><div class="task-note">루트 내 장소에 근접한 TourAPI 인증 숙소(contentTypeId=32) / 맛집(39) 추천 카드 표시. 루트 종료 지점 기준 반경 1km 이내.</div></td>
+          <td style="text-align:center;"><span class="badge badge-easy">쉬움</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">예상 이동 시간 계산</div></td>
+          <td><div class="task-note">1안: Kakao Mobility API <code>future/route</code> (유료, 정확). 2안: Haversine 직선거리 + 도보 4km/h 환산 (무료). MVP는 2안 → 공모전 후 1안으로 업그레이드. 루트 카드에 총 예상 시간 표시.</div></td>
+          <td style="text-align:center;"><span class="badge badge-med">보통</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="footer-boxes">
+      <div class="done-box">
+        <div class="box-title">완료 기준 (DoD)</div>
+        장소 3개 선택 → 루트 생성 → 혼잡도 신호 표시 → 예상 이동 시간 확인
+      </div>
+      <div class="risk-box">
+        <div class="box-title">리스크</div>
+        방문자 통계 데이터 부족 시 혼잡도 정확도 낮음 → 인기 POI 50개 우선 수집 후 확대
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────── Sprint 4 ─────────── -->
+  <div class="sprint-card">
+    <div class="sprint-header">
+      <div class="sprint-number sn-4">4</div>
+      <div class="sprint-info">
+        <div class="sprint-title">Sprint 4 — SNS Spot Analyzer (Trend Spot & Pop-up)</div>
+        <div class="sprint-subtitle">Feature 1 완성 · YouTube URL → AI 장소 분석 → 지도 핀 연결</div>
+      </div>
+      <div class="sprint-meta">
+        <span class="meta-chip chip-week">Week 8–9 (2주)</span>
+        <span class="meta-chip chip-med">주로 보통</span>
+        <span class="meta-chip chip-core">★ 핵심 차별화</span>
+      </div>
+    </div>
+    <div class="goal-bar">
+      <span class="goal-label">목표</span>
+      YouTube URL을 입력하면 영상 제목·설명에서 AI가 장소명을 추출하고 지도에 "SNS 트렌드" 핀으로 표시. 10초 내 결과 제공.
+    </div>
+    <div class="stack-bar">
+      <span class="stack-label">기술 스택</span>
+      <span class="stack-tag">YouTube Data API v3</span>
+      <span class="stack-tag">FastAPI (Python)</span>
+      <span class="stack-tag">OpenAI gpt-4o-mini</span>
+      <span class="stack-tag">TourAPI /searchKeyword</span>
+      <span class="stack-tag">Render.com</span>
+      <span class="stack-tag">Upstash Redis (URL 해시 캐싱)</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:34%">작업 항목</th>
+          <th>구현 상세 / 노트</th>
+          <th style="width:72px; text-align:center;">난이도</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="task-name">YouTube URL 파싱 → videos.list API 메타데이터 추출</div></td>
+          <td><div class="task-note">URL에서 <code>videoId</code> 추출 (정규식). YouTube Data API <code>videos.list</code>로 snippet(제목, 설명, 태그) 취득. API 키 1개당 일 10,000 quota.</div></td>
+          <td style="text-align:center;"><span class="badge badge-med">보통</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">FastAPI AI Worker 구축 (Render.com 배포)</div></td>
+          <td><div class="task-note">Next.js → FastAPI 별도 서비스 분리 (AI 처리 격리). <code>/analyze</code> POST 엔드포인트. Render.com Free Tier 배포 (슬립 문제 → Sprint 7에서 Cron으로 해결). Docker 없이 Python 직접 배포.</div></td>
+          <td style="text-align:center;"><span class="badge badge-med">보통</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">OpenAI gpt-4o-mini: 영상 제목/설명에서 장소명 추출</div></td>
+          <td><div class="task-note">프롬프트 설계: "다음 텍스트에서 한국 실제 장소명을 JSON 배열로 추출하세요." JSON Schema 출력 강제. 모델: <code>gpt-4o-mini</code> (비용 최소화, ~$0.001/건). 최대 10개 장소 추출.</div></td>
+          <td style="text-align:center;"><span class="badge badge-med">보통</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">추출된 장소명 → TourAPI /searchKeyword 매핑</div></td>
+          <td><div class="task-note">장소명 배열 → TourAPI <code>searchKeyword</code> 병렬 호출 (Promise.allSettled). 매핑 실패 시 제외. 결과: [{name, lat, lng, contentId}] 배열 반환.</div></td>
+          <td style="text-align:center;"><span class="badge badge-med">보통</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">분석 결과 캐싱 (URL 해시 기반 중복 방지)</div></td>
+          <td><div class="task-note">YouTube videoId → SHA-256 해시 → Redis 키. TTL 24시간. 동일 URL 재분석 시 캐시 히트 → OpenAI 호출 0건. 캐시 히트율 목표 70%+.</div></td>
+          <td style="text-align:center;"><span class="badge badge-med">보통</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">분석 결과 지도 핀 표시 + "SNS 트렌드" 뱃지</div></td>
+          <td><div class="task-note">일반 POI 핀과 구분되는 보라색 "트렌드" 마커. 핀 클릭 → 원본 YouTube 영상 링크 + 장소 상세. 분석 결과 카드 (영상 썸네일, 제목 포함).</div></td>
+          <td style="text-align:center;"><span class="badge badge-easy">쉬움</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">quota 소진 모니터링 + 슬랙/이메일 알림</div></td>
+          <td><div class="task-note">YouTube API / OpenAI API 일 사용량 추적 → 80% 도달 시 Slack Webhook 알림. 긴급 시 분석 기능 자동 비활성화 플래그 (Feature Flag).</div></td>
+          <td style="text-align:center;"><span class="badge badge-med">보통</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="footer-boxes">
+      <div class="done-box">
+        <div class="box-title">완료 기준 (DoD)</div>
+        YouTube URL 입력 → 10초 내 장소 핀 지도 표시. 동일 URL 재입력 시 즉시(캐시) 결과.
+      </div>
+      <div class="risk-box">
+        <div class="box-title">리스크</div>
+        gpt-4o-mini 장소 추출 정확도 ~70% → 프롬프트 Few-shot 예시 추가로 개선 필요
+      </div>
+      <div class="dep-box">
+        <div class="box-title">의존성</div>
+        Sprint 0 (FastAPI 환경변수), Sprint 1 (TourAPI 캐싱)
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────── Sprint 5 ─────────── -->
+  <div class="sprint-card">
+    <div class="sprint-header">
+      <div class="sprint-number sn-5">5</div>
+      <div class="sprint-info">
+        <div class="sprint-title">Sprint 5 — AI 페르소나 & 미디어 루팅 (Persona & Media Routing)</div>
+        <div class="sprint-subtitle">Feature 2 완성 · 스타/드라마 선택 → AI 맞춤 1일 루트 생성</div>
+      </div>
+      <div class="sprint-meta">
+        <span class="meta-chip chip-week">Week 10–11 (2주)</span>
+        <span class="meta-chip chip-hard">일부 어려움</span>
+        <span class="meta-chip chip-core">★ 핵심 차별화</span>
+      </div>
+    </div>
+    <div class="goal-bar">
+      <span class="goal-label">목표</span>
+      스타·드라마·무드 태그를 선택하면 AI가 관련 장소를 추천하고 "○○의 하루 루트" 카드를 생성. 루트 저장 및 SNS 공유 지원.
+    </div>
+    <div class="stack-bar">
+      <span class="stack-label">기술 스택</span>
+      <span class="stack-tag">OpenAI gpt-4o-mini</span>
+      <span class="stack-tag">TourAPI /searchKeyword</span>
+      <span class="stack-tag">Supabase (persona_maps, routes)</span>
+      <span class="stack-tag">Vercel OG Image (공유 카드)</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:34%">작업 항목</th>
+          <th>구현 상세 / 노트</th>
+          <th style="width:72px; text-align:center;">난이도</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="task-name">페르소나 선택 UI (스타/드라마/무드 태그)</div></td>
+          <td><div class="task-note">3단계 선택 UI: ① 카테고리 (K-POP 아이돌 / K-드라마 / 무드) → ② 세부 선택 (예: BTS / 이상한 변호사 우영우 / 로맨틱) → ③ 선택 확인. 카드 그리드 UI, 이미지 포함.</div></td>
+          <td style="text-align:center;"><span class="badge badge-easy">쉬움</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">사전 정의된 스타-장소 매핑 데이터 구축</div></td>
+          <td><div class="task-note">수동 큐레이션 50개 (예: BTS → 한강공원, 광화문광장 / 이상한변호사우영우 → 통영 등). Supabase <code>persona_places</code> 테이블. 관리자 페이지에서 추가 가능.</div></td>
+          <td style="text-align:center;"><span class="badge badge-med">보통</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">OpenAI: 무드 태그 → 장소 카테고리 매핑 프롬프트</div></td>
+          <td><div class="task-note">입력: 무드 태그 배열 + 현재 위치 도시. 출력: 추천 장소 카테고리 + 키워드 배열 (JSON). 예: "로맨틱 + 서울" → ["한강 야경", "카페거리", "전망대"]. 품질 보장을 위한 프롬프트 반복 테스트 필요.</div></td>
+          <td style="text-align:center;"><span class="badge badge-hard">어려움</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">매핑된 카테고리로 TourAPI 장소 필터링 + 루트 생성</div></td>
+          <td><div class="task-note">추출된 키워드로 TourAPI <code>searchKeyword</code> 병렬 조회 → 상위 5개 장소 선정 (평점/리뷰 수 기준). 이동 거리 최적화 (그리디 알고리즘, 최근접 다음 장소). 1일 루트 (5장소) 생성.</div></td>
+          <td style="text-align:center;"><span class="badge badge-med">보통</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">"○○의 하루 루트" 결과 카드 UI</div></td>
+          <td><div class="task-note">장소 순서 타임라인 카드 (아침 → 점심 → 오후 → 저녁). 각 장소 이미지, 이름, 예상 소요 시간, 혼잡도 신호. 전체 루트 지도 오버레이.</div></td>
+          <td style="text-align:center;"><span class="badge badge-med">보통</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">루트 저장 + 공유 링크 생성 (Supabase)</div></td>
+          <td><div class="task-note">루트 UUID → 공개 링크 <code>/route/[id]</code>. Vercel <code>@vercel/og</code>로 OG 이미지 동적 생성 (SNS 공유 시 미리보기). 카카오톡 공유 SDK 연동.</div></td>
+          <td style="text-align:center;"><span class="badge badge-med">보통</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="footer-boxes">
+      <div class="done-box">
+        <div class="box-title">완료 기준 (DoD)</div>
+        스타 선택 → 맞춤 1일 루트 카드 생성 → 공유 링크 동작. OG 이미지 카카오톡 미리보기 노출.
+      </div>
+      <div class="risk-box">
+        <div class="box-title">리스크</div>
+        OpenAI 무드 매핑 품질 불안정 → Few-shot 프롬프트 + 결과 검수 UI (사용자가 장소 교체 가능) 필요
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────── Sprint 6 ─────────── -->
+  <div class="sprint-card">
+    <div class="sprint-header">
+      <div class="sprint-number sn-6">6</div>
+      <div class="sprint-info">
+        <div class="sprint-title">Sprint 6 — AI 멀티모달 도슨트 (AI Multimodal Docent)</div>
+        <div class="sprint-subtitle">Feature 5 완성 · 장소 도착 감지 → AI 스토리텔링 → TTS 음성 재생</div>
+      </div>
+      <div class="sprint-meta">
+        <span class="meta-chip chip-week">Week 12–13 (2주)</span>
+        <span class="meta-chip chip-hard">주로 어려움</span>
+        <span class="meta-chip chip-core">★ 핵심 차별화</span>
+      </div>
+    </div>
+    <div class="goal-bar">
+      <span class="goal-label">목표</span>
+      루트 이동 중 장소에 도착하면 자동으로 AI 생성 스토리텔링 음성 해설이 재생. 사전 생성 캐싱으로 지연 최소화.
+    </div>
+    <div class="stack-bar">
+      <span class="stack-label">기술 스택</span>
+      <span class="stack-tag">OpenAI gpt-4o-mini (텍스트 생성)</span>
+      <span class="stack-tag">OpenAI TTS API (tts-1)</span>
+      <span class="stack-tag">Web Speech API (무료 fallback)</span>
+      <span class="stack-tag">Geolocation API (도착 감지)</span>
+      <span class="stack-tag">Supabase Storage (오디오 캐싱)</span>
+      <span class="stack-tag">TourAPI odii (가이드 데이터)</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:34%">작업 항목</th>
+          <th>구현 상세 / 노트</th>
+          <th style="width:72px; text-align:center;">난이도</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="task-name">TourAPI odii 오디오 가이드 데이터 연동</div></td>
+          <td><div class="task-note">TourAPI <code>detailIntro</code> + <code>detailInfo</code>로 장소 설명 텍스트 수집. odii 공식 오디오 가이드 URL이 있는 경우 우선 사용 (AI 생성 생략). 없는 경우 AI 생성 경로로 전환.</div></td>
+          <td style="text-align:center;"><span class="badge badge-med">보통</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">OpenAI gpt-4o-mini: 장소별 스토리텔링 텍스트 생성</div></td>
+          <td><div class="task-note">프롬프트: "당신은 친근한 여행 가이드입니다. [장소명]에 대해 방문객이 지금 막 도착했을 때 들을 수 있는 60초 분량의 해설을 작성하세요." 언어별(ko/en/ja/zh) 별도 생성. 결과 Supabase에 저장.</div></td>
+          <td style="text-align:center;"><span class="badge badge-hard">어려움</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">TTS 음성 변환 (OpenAI TTS 또는 Web Speech API)</div></td>
+          <td><div class="task-note">1안: OpenAI <code>tts-1</code> 모델 (<code>alloy</code> 보이스, ~$0.015/1K chars). 오디오 파일 Supabase Storage 저장. 2안: 브라우저 <code>speechSynthesis</code> API (무료, 품질 낮음). 기본값: 1안 → 비용 초과 시 2안 fallback.</div></td>
+          <td style="text-align:center;"><span class="badge badge-hard">어려움</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">현위치 기반 장소 도착 감지 → 자동 도슨트 실행</div></td>
+          <td><div class="task-note"><code>navigator.geolocation.watchPosition</code> 폴링 (5초 간격). 루트 내 다음 장소 반경 50m 이내 진입 감지 → 도슨트 자동 시작. 배터리 절약을 위한 백그라운드 모드 제한 처리 (iOS Safari 제약).</div></td>
+          <td style="text-align:center;"><span class="badge badge-hard">어려움</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">도슨트 텍스트 + 음성 사전 생성 캐싱</div></td>
+          <td><div class="task-note">루트 확정 시 → 포함된 장소 전체 텍스트+오디오 사전 생성 (Background Job). Supabase Storage에 MP3 저장. 동일 장소 재방문 시 재생성 없이 URL 직접 재생. CDN 캐시 활용.</div></td>
+          <td style="text-align:center;"><span class="badge badge-med">보통</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">도슨트 재생 UI (파형 애니메이션, 일시정지/재생)</div></td>
+          <td><div class="task-note">화면 하단 미니 플레이어: 장소 썸네일 + 이름 + 재생/일시정지 버튼 + 진행바. CSS 파형 애니메이션 (재생 중 표시). 텍스트 스크립트 펼치기 옵션.</div></td>
+          <td style="text-align:center;"><span class="badge badge-med">보통</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="footer-boxes">
+      <div class="done-box">
+        <div class="box-title">완료 기준 (DoD)</div>
+        루트 이동 중 장소 반경 50m 도착 → 자동 음성 해설 재생 (한/영 언어 전환 동작)
+      </div>
+      <div class="risk-box">
+        <div class="box-title">리스크</div>
+        iOS Safari 백그라운드 위치 제한 → "화면 켜두기" 안내 배너 표시. OpenAI TTS 비용 모니터링 필수.
+      </div>
+      <div class="dep-box">
+        <div class="box-title">의존성</div>
+        Sprint 3 (루트 구조), Sprint 5 (루트 저장)
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────── Sprint 7 ─────────── -->
+  <div class="sprint-card">
+    <div class="sprint-header">
+      <div class="sprint-number sn-7">7</div>
+      <div class="sprint-info">
+        <div class="sprint-title">Sprint 7 — 품질 & 최적화 (QA & Polish)</div>
+        <div class="sprint-subtitle">PWA · 다국어 완성 · 성능 · E2E 테스트 · 공모전 데모 준비</div>
+      </div>
+      <div class="sprint-meta">
+        <span class="meta-chip chip-week">Week 14–15 (2주)</span>
+        <span class="meta-chip chip-med">일부 보통</span>
+      </div>
+    </div>
+    <div class="goal-bar">
+      <span class="goal-label">목표</span>
+      성능 개선, 다국어 번역 완성, PWA 오프라인 지원, 버그 수정. 공모전 제출용 데모 시나리오 영상 준비.
+    </div>
+    <div class="stack-bar">
+      <span class="stack-label">기술 스택</span>
+      <span class="stack-tag">next-pwa (Service Worker)</span>
+      <span class="stack-tag">Playwright (E2E)</span>
+      <span class="stack-tag">Sentry</span>
+      <span class="stack-tag">Lighthouse CI</span>
+      <span class="stack-tag">Render.com Cron</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:34%">작업 항목</th>
+          <th>구현 상세 / 노트</th>
+          <th style="width:72px; text-align:center;">난이도</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="task-name">PWA 설정 (manifest.json + Service Worker)</div></td>
+          <td><div class="task-note"><code>next-pwa</code> 라이브러리. <code>manifest.json</code>: 앱 이름, 아이콘 (192x192, 512x512), 배경색. Service Worker: 오프라인 시 마지막 지도 상태 캐시. "홈 화면 추가" 배너.</div></td>
+          <td style="text-align:center;"><span class="badge badge-med">보통</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">다국어 번역 텍스트 완성 (en/ja/zh)</div></td>
+          <td><div class="task-note">Sprint 1~6에서 추가된 모든 UI 텍스트 번역. ChatGPT로 초벌 번역 후 원어민 검수 (일본어/중국어). 동적 텍스트(장소명 등)는 TourAPI 언어 파라미터 활용.</div></td>
+          <td style="text-align:center;"><span class="badge badge-easy">쉬움</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">Lighthouse 성능 점수 90+ (이미지 최적화, 코드스플리팅)</div></td>
+          <td><div class="task-note"><code>next/image</code> WebP 변환, Lazy Loading. Dynamic Import로 지도/AI 컴포넌트 코드스플리팅. <code>lighthouse-ci</code>를 GitHub Actions에 추가. Core Web Vitals LCP &lt; 2.5s 목표.</div></td>
+          <td style="text-align:center;"><span class="badge badge-med">보통</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">Sentry 에러 모니터링 연동</div></td>
+          <td><div class="task-note"><code>@sentry/nextjs</code>. 프론트엔드 + API Route 에러 자동 수집. Source Map 업로드 (Sentry 프로젝트 토큰). 슬랙 알림 연동. 무료 플랜 (5K events/월).</div></td>
+          <td style="text-align:center;"><span class="badge badge-easy">쉬움</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">E2E 테스트 (Playwright) 핵심 플로우</div></td>
+          <td><div class="task-note">테스트 시나리오: ① 로그인 ② 지도 로드 + 핀 클릭 ③ YouTube URL 분석 ④ 루트 생성 + 저장 ⑤ 페르소나 선택 → 루트 카드. CI에 통합 (PR 머지 전 통과 필수).</div></td>
+          <td style="text-align:center;"><span class="badge badge-med">보통</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">Render.com AI Worker 슬립 방지 Cron 설정</div></td>
+          <td><div class="task-note">Render.com Free Tier는 15분 비활성 시 슬립. GitHub Actions Cron (10분 간격) 또는 <code>cron-job.org</code> 무료 서비스로 헬스체크 URL (<code>/health</code>) 호출.</div></td>
+          <td style="text-align:center;"><span class="badge badge-easy">쉬움</span></td>
+        </tr>
+        <tr>
+          <td><div class="task-name">공모전 제출용 데모 시나리오 영상 준비</div></td>
+          <td><div class="task-note">시나리오: "일본인 K-POP 팬이 BTS 루트로 서울 여행" → YouTube 영상 분석 → SNS 트렌드 핀 확인 → 혼잡도 확인 → AI 도슨트 청취. Loom 또는 OBS로 녹화 (3~5분).</div></td>
+          <td style="text-align:center;"><span class="badge badge-easy">쉬움</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="footer-boxes">
+      <div class="done-box">
+        <div class="box-title">완료 기준 (DoD)</div>
+        Lighthouse 90+, E2E 5개 플로우 통과, 4개 언어 UI 완성, 데모 영상 제작 완료
+      </div>
+      <div class="risk-box">
+        <div class="box-title">리스크</div>
+        Lighthouse 90+ 달성 어려울 경우 → 지도 초기 로딩 스켈레톤 + prefetch로 우선 개선
+      </div>
+    </div>
+  </div>
+
+  <!-- 전체 타임라인 -->
+  <h2>전체 타임라인 요약</h2>
+  <div class="timeline">
+    <div class="tl-grid">
+      <div class="tl-head" style="border-bottom: 1px solid #334155; padding-bottom: 12px;">기간</div>
+      <div class="tl-head" style="border-bottom: 1px solid #334155; padding-bottom: 12px;">Sprint</div>
+      <div class="tl-head" style="border-bottom: 1px solid #334155; padding-bottom: 12px;">핵심 산출물</div>
+      <div class="tl-row">
+        <div class="tl-week">Week 1</div>
+        <div class="tl-sprint">Sprint 0 — 기반 셋업</div>
+        <div class="tl-feature" style="color:#94A3B8; font-size:12px;">Vercel 배포, Google 로그인, CI/CD</div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-week">Week 2–3</div>
+        <div class="tl-sprint">Sprint 1 — 지도 + TourAPI POI</div>
+        <div class="tl-feature" style="color:#94A3B8; font-size:12px;">지도 핀, 상세 모달, 카테고리 필터, i18n</div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-week">Week 4–5</div>
+        <div class="tl-sprint">Sprint 2 — 편의시설 레이더</div>
+        <div class="tl-feature" style="color:#94A3B8; font-size:12px;">화장실 레이더, 팝업스토어, FCM 알림</div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-week">Week 6–7</div>
+        <div class="tl-sprint">Sprint 3 — 혼잡도 + 루트</div>
+        <div class="tl-feature" style="color:#94A3B8; font-size:12px;">신호등 혼잡도, 루트 드래그, 이동시간</div>
+      </div>
+      <div class="tl-row tl-highlight">
+        <div class="tl-week">Week 8–9</div>
+        <div class="tl-sprint">Sprint 4 — SNS Spot Analyzer ★</div>
+        <div class="tl-feature">YouTube AI 분석 → 지도 트렌드 핀</div>
+      </div>
+      <div class="tl-row tl-highlight">
+        <div class="tl-week">Week 10–11</div>
+        <div class="tl-sprint">Sprint 5 — AI 페르소나 & 루팅 ★</div>
+        <div class="tl-feature">스타 선택 → AI 맞춤 1일 루트 카드</div>
+      </div>
+      <div class="tl-row tl-highlight">
+        <div class="tl-week">Week 12–13</div>
+        <div class="tl-sprint">Sprint 6 — AI 멀티모달 도슨트 ★</div>
+        <div class="tl-feature">도착 감지 → AI TTS 음성 해설 자동 재생</div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-week">Week 14–15</div>
+        <div class="tl-sprint">Sprint 7 — 품질 & 최적화</div>
+        <div class="tl-feature" style="color:#94A3B8; font-size:12px;">PWA, 성능 90+, E2E, 데모 영상</div>
+      </div>
+    </div>
+    <div class="tl-total">총 개발기간: 약 15주 (3.5개월) &nbsp;|&nbsp; MVP 공모전 제출: Week 9 (Sprint 0~4 완료 시)</div>
+  </div>
+
+  <!-- API 비용 추정 -->
+  <h2>예상 API 비용 (월 기준, 데모 수준)</h2>
+  <div class="cost-table">
+    <table>
+      <thead>
+        <tr>
+          <th>서비스</th>
+          <th>사용처</th>
+          <th>예상 사용량</th>
+          <th>월 비용 (USD)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>OpenAI gpt-4o-mini</td>
+          <td>SNS 분석 + 페르소나 매핑</td>
+          <td>~500건/월</td>
+          <td>~$0.50</td>
+        </tr>
+        <tr>
+          <td>OpenAI TTS (tts-1)</td>
+          <td>도슨트 음성 생성</td>
+          <td>~200장소 × 500자</td>
+          <td>~$1.50</td>
+        </tr>
+        <tr>
+          <td>YouTube Data API</td>
+          <td>SNS 분석</td>
+          <td>~300건/일 (무료 10K quota)</td>
+          <td>$0 (무료)</td>
+        </tr>
+        <tr>
+          <td>TourAPI</td>
+          <td>POI 조회 (전체)</td>
+          <td>캐싱으로 할당량 절약</td>
+          <td>$0 (무료)</td>
+        </tr>
+        <tr>
+          <td>Supabase</td>
+          <td>DB + Auth + Storage</td>
+          <td>Free Tier 충분</td>
+          <td>$0 (무료)</td>
+        </tr>
+        <tr>
+          <td>Upstash Redis</td>
+          <td>API 응답 캐싱</td>
+          <td>Free Tier 충분</td>
+          <td>$0 (무료)</td>
+        </tr>
+        <tr>
+          <td>Vercel + Render.com</td>
+          <td>호스팅 (Next.js + FastAPI)</td>
+          <td>Free Tier 충분</td>
+          <td>$0 (무료)</td>
+        </tr>
+        <tr class="cost-total">
+          <td colspan="3"><strong>총 예상 비용 (데모/공모전 기간)</strong></td>
+          <td><strong>~$2 / 월</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- MVP -->
+  <div class="mvp-box">
+    <h3>MVP 범위 — 공모전 최소 제출 기준 (Sprint 0~4, 9주)</h3>
+    <p style="font-size:13px; color:#065F46; margin-bottom:4px;">Sprint 0~4 완료 시 공모전 제출 가능. Sprint 5~6은 데모 영상에서 프로토타입으로 시연 가능.</p>
+    <div class="mvp-grid">
+      <div class="mvp-item">
+        <strong>지도 기반 POI 표시</strong>
+        TourAPI 연동 + 카테고리 필터 + 다국어
+      </div>
+      <div class="mvp-item">
+        <strong>편의시설 레이더</strong>
+        화장실 · 코인노래방 · 팝업스토어 알림
+      </div>
+      <div class="mvp-item">
+        <strong>혼잡도 신호등</strong>
+        요일/시간대 기반 여유·보통·혼잡 표시
+      </div>
+      <div class="mvp-item">
+        <strong>SNS Spot Analyzer ★</strong>
+        YouTube URL → AI 장소 분석 → 지도 핀
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
