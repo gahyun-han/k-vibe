@@ -284,7 +284,6 @@
     "help_body": "반경 슬라이더를 조절하거나 카테고리를 선택한 뒤, 카드나 핀을 눌러 Google 지도에서 열어보세요.",
     "found": "{{count}}곳 찾음",
     "refresh": "새로고침",
-    "source_mock": "Mock",
     "radius": "반경",
     "map_title": "레이더 지도",
     "map_subtitle": "{{radius}}m 반경 미리보기",
@@ -294,24 +293,22 @@
     "view_on_internal_map": "{{name}} 우리 지도에서 보기",
     "filters": {
       "all": "전체",
-      "restroom": "화장실",
-      "atm": "ATM",
-      "medical": "의료",
-      "transit": "대중교통",
-      "cafe_toilet": "카페 화장실",
-      "pharmacy": "약국",
-      "convenience": "편의점",
-      "popup": "팝업스토어"
+      "hot_spring_sauna_spa": "온천/사우나/스파",
+      "jjimjilbang": "찜질방",
+      "hanbang_experience": "한방 체험",
+      "healing_meditation": "힐링 명상",
+      "beauty_spa": "뷰티 스파",
+      "other_wellness": "기타 웰니스",
+      "nature_healing": "자연 치유"
     },
     "facility_types": {
-      "restroom": "화장실",
-      "atm": "ATM",
-      "medical": "의료",
-      "transit": "대중교통",
-      "pharmacy": "약국",
-      "cafe_toilet": "카페 화장실",
-      "convenience": "편의점",
-      "popup": "팝업스토어"
+      "hot_spring_sauna_spa": "온천/사우나/스파",
+      "jjimjilbang": "찜질방",
+      "hanbang_experience": "한방 체험",
+      "healing_meditation": "힐링 명상",
+      "beauty_spa": "뷰티 스파",
+      "other_wellness": "기타 웰니스",
+      "nature_healing": "자연 치유"
     },
     "error_title": "편의시설을 불러올 수 없습니다",
     "retry": "다시 시도",
@@ -319,9 +316,6 @@
     "empty_title": "이 반경에서 편의시설을 찾지 못했습니다",
     "empty_hint": "반경을 늘리거나 다른 카테고리를 선택해보세요.",
     "expand_radius": "반경 확장",
-    "closed": "영업종료",
-    "twenty_four_hours": "24시간",
-    "accessible_restroom": "장애인 화장실 이용 가능",
     "view_on_map": "지도에서 보기"
   },
   "profile": {

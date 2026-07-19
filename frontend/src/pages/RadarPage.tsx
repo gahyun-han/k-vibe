@@ -78,8 +78,7 @@ export default function RadarPage() {
               {t("radar.title")}
             </h2>
             <p className="mt-0.5 text-xs text-muted-foreground">
-              {locationLabel} / {t("radar.found", { count: facilities.length })}{" "}
-              / {t("radar.source_mock")}
+              {locationLabel} / {t("radar.found", { count: facilities.length })}
             </p>
           </div>
           <button

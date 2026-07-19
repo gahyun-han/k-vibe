@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Accessibility, ChevronDown, ChevronUp, Clock, ExternalLink, MapPin } from 'lucide-react'
+import { ChevronDown, ChevronUp, ExternalLink, MapPin, Phone } from 'lucide-react'
 import { getFacilityTypeMeta, type Facility } from '@/types/facility'
 import { buildGoogleMapsFacilityUrl } from '@/lib/facility-share'
 import { cn } from '@/lib/utils'
@@ -38,16 +38,6 @@ export function FacilityCard({ facility, onViewOnInternalMap }: FacilityCardProp
               <span className={cn('rounded-full px-1.5 py-0.5 text-xs font-semibold', typeMeta.bg, typeMeta.color)}>
                 {t(typeMeta.labelKey)}
               </span>
-              {facility.is24h && (
-                <span className="rounded-full bg-emerald-500/10 px-1.5 py-0.5 text-xs font-semibold text-emerald-500">
-                  {t('radar.twenty_four_hours')}
-                </span>
-              )}
-              {facility.isOpen === false && (
-                <span className="rounded-full bg-destructive/10 px-1.5 py-0.5 text-xs font-semibold text-destructive">
-                  {t('radar.closed')}
-                </span>
-              )}
             </div>
             <p className="mt-0.5 truncate text-sm font-semibold text-foreground">{facility.name}</p>
             <p className="truncate text-xs text-muted-foreground">{facility.address}</p>
@@ -92,19 +82,12 @@ export function FacilityCard({ facility, onViewOnInternalMap }: FacilityCardProp
             <MapPin className="mt-0.5 h-3 w-3 shrink-0 text-primary" />
             <span>{facility.address}</span>
           </div>
-          {facility.floor && (
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <Clock className="h-3 w-3 shrink-0 text-primary" />
-              <span>{facility.floor}</span>
-            </div>
+          {facility.tel && (
+            <a href={`tel:${facility.tel}`} className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground">
+              <Phone className="h-3 w-3 shrink-0 text-primary" />
+              <span>{facility.tel}</span>
+            </a>
           )}
-          {facility.hasDisabled && (
-            <div className="flex items-center gap-2 text-xs text-emerald-500">
-              <Accessibility className="h-3 w-3" />
-              <span>{t('radar.accessible_restroom')}</span>
-            </div>
-          )}
-          {facility.extra && <div className="rounded-lg bg-background px-2.5 py-1.5 text-xs text-muted-foreground">{facility.extra}</div>}
           <div className="mt-1 grid grid-cols-2 gap-2">
             <button
               type="button"

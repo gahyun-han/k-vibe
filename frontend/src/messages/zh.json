@@ -284,7 +284,6 @@
     "help_body": "拖动半径滑块或选择分类，然后点击卡片或图钉即可在Google地图中打开。",
     "found": "找到{{count}}处",
     "refresh": "刷新设施",
-    "source_mock": "Mock",
     "radius": "半径",
     "map_title": "雷达地图",
     "map_subtitle": "{{radius}}米半径预览",
@@ -294,24 +293,22 @@
     "view_on_internal_map": "在我们的地图中查看{{name}}",
     "filters": {
       "all": "全部",
-      "restroom": "洗手间",
-      "atm": "ATM",
-      "medical": "医疗",
-      "transit": "交通",
-      "cafe_toilet": "咖啡店洗手间",
-      "pharmacy": "药房",
-      "convenience": "便利店",
-      "popup": "快闪店"
+      "hot_spring_sauna_spa": "温泉/桑拿/水疗",
+      "jjimjilbang": "汗蒸房",
+      "hanbang_experience": "韩方体验",
+      "healing_meditation": "疗愈冥想",
+      "beauty_spa": "美容水疗",
+      "other_wellness": "其他健康设施",
+      "nature_healing": "自然疗愈"
     },
     "facility_types": {
-      "restroom": "洗手间",
-      "atm": "ATM",
-      "medical": "医疗",
-      "transit": "交通",
-      "pharmacy": "药房",
-      "cafe_toilet": "咖啡店洗手间",
-      "convenience": "便利店",
-      "popup": "快闪店"
+      "hot_spring_sauna_spa": "温泉/桑拿/水疗",
+      "jjimjilbang": "汗蒸房",
+      "hanbang_experience": "韩方体验",
+      "healing_meditation": "疗愈冥想",
+      "beauty_spa": "美容水疗",
+      "other_wellness": "其他健康设施",
+      "nature_healing": "自然疗愈"
     },
     "error_title": "无法加载设施信息",
     "retry": "重试",
@@ -319,9 +316,6 @@
     "empty_title": "此范围内未找到设施",
     "empty_hint": "请扩大半径或尝试其他分类。",
     "expand_radius": "扩大半径",
-    "closed": "已关闭",
-    "twenty_four_hours": "24小时",
-    "accessible_restroom": "提供无障碍洗手间",
     "view_on_map": "在地图中查看"
   },
   "profile": {

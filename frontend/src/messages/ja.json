@@ -284,7 +284,6 @@
     "help_body": "半径スライダーを調整するかカテゴリーを選んで、カードやピンをタップするとGoogleマップで開きます。",
     "found": "{{count}}件見つかりました",
     "refresh": "更新",
-    "source_mock": "Mock",
     "radius": "半径",
     "map_title": "レーダーマップ",
     "map_subtitle": "半径{{radius}}mのプレビュー",
@@ -294,24 +293,22 @@
     "view_on_internal_map": "{{name}}をアプリ内マップで見る",
     "filters": {
       "all": "すべて",
-      "restroom": "トイレ",
-      "atm": "ATM",
-      "medical": "医療",
-      "transit": "交通",
-      "cafe_toilet": "カフェのトイレ",
-      "pharmacy": "薬局",
-      "convenience": "コンビニ",
-      "popup": "ポップアップストア"
+      "hot_spring_sauna_spa": "温泉・サウナ・スパ",
+      "jjimjilbang": "チムジルバン",
+      "hanbang_experience": "韓方体験",
+      "healing_meditation": "ヒーリング瞑想",
+      "beauty_spa": "ビューティースパ",
+      "other_wellness": "その他ウェルネス",
+      "nature_healing": "自然療法"
     },
     "facility_types": {
-      "restroom": "トイレ",
-      "atm": "ATM",
-      "medical": "医療",
-      "transit": "交通",
-      "pharmacy": "薬局",
-      "cafe_toilet": "カフェのトイレ",
-      "convenience": "コンビニ",
-      "popup": "ポップアップストア"
+      "hot_spring_sauna_spa": "温泉・サウナ・スパ",
+      "jjimjilbang": "チムジルバン",
+      "hanbang_experience": "韓方体験",
+      "healing_meditation": "ヒーリング瞑想",
+      "beauty_spa": "ビューティースパ",
+      "other_wellness": "その他ウェルネス",
+      "nature_healing": "自然療法"
     },
     "error_title": "施設情報を読み込めませんでした",
     "retry": "再試行",
@@ -319,9 +316,6 @@
     "empty_title": "この範囲内に施設が見つかりません",
     "empty_hint": "半径を広げるか、別のカテゴリーを試してください。",
     "expand_radius": "半径を広げる",
-    "closed": "営業終了",
-    "twenty_four_hours": "24時間",
-    "accessible_restroom": "バリアフリートイレ利用可",
     "view_on_map": "マップで見る"
   },
   "profile": {

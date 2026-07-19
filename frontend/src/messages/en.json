@@ -284,7 +284,6 @@
     "help_body": "Drag the radius slider or pick a category, then tap a card or pin to open it in Google Maps.",
     "found": "{{count}} found",
     "refresh": "Refresh facilities",
-    "source_mock": "Mock",
     "radius": "Radius",
     "map_title": "Radar map",
     "map_subtitle": "{{radius}}m radius preview",
@@ -294,24 +293,22 @@
     "view_on_internal_map": "View {{name}} on our map",
     "filters": {
       "all": "All",
-      "restroom": "Restroom",
-      "atm": "ATM",
-      "medical": "Medical",
-      "transit": "Transit",
-      "cafe_toilet": "Cafe WC",
-      "pharmacy": "Pharmacy",
-      "convenience": "Store",
-      "popup": "Pop-up"
+      "hot_spring_sauna_spa": "Hot Spring/Sauna/Spa",
+      "jjimjilbang": "Jjimjilbang",
+      "hanbang_experience": "Hanbang Experience",
+      "healing_meditation": "Healing & Meditation",
+      "beauty_spa": "Beauty Spa",
+      "other_wellness": "Other Wellness",
+      "nature_healing": "Nature Healing"
     },
     "facility_types": {
-      "restroom": "Restroom",
-      "atm": "ATM",
-      "medical": "Medical",
-      "transit": "Transit",
-      "pharmacy": "Pharmacy",
-      "cafe_toilet": "Cafe restroom",
-      "convenience": "Convenience",
-      "popup": "Pop-up"
+      "hot_spring_sauna_spa": "Hot Spring/Sauna/Spa",
+      "jjimjilbang": "Jjimjilbang",
+      "hanbang_experience": "Hanbang Experience",
+      "healing_meditation": "Healing & Meditation",
+      "beauty_spa": "Beauty Spa",
+      "other_wellness": "Other Wellness",
+      "nature_healing": "Nature Healing"
     },
     "error_title": "Facilities could not be loaded",
     "retry": "Retry",
@@ -319,9 +316,6 @@
     "empty_title": "No facilities found in this radius",
     "empty_hint": "Increase the radius or try another category.",
     "expand_radius": "Expand radius",
-    "closed": "Closed",
-    "twenty_four_hours": "24h",
-    "accessible_restroom": "Accessible restroom available",
     "view_on_map": "View on Map"
   },
   "profile": {
