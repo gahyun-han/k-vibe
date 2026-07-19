@@ -65,7 +65,9 @@
     "analysis_result": "分析結果",
     "show_saved": "保存済みのみ表示",
     "collapse_panel": "パネルを閉じる",
-    "expand_panel": "パネルを開く"
+    "expand_panel": "パネルを開く",
+    "related_attractions_title": "この地域のおすすめ関連観光地",
+    "related_attractions_empty": "この地域の関連観光地データはまだありません"
   },
   "placeDetail": {
     "add_to_route": "ルートに追加",

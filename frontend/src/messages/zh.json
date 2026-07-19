@@ -65,7 +65,9 @@
     "analysis_result": "分析结果",
     "show_saved": "仅显示收藏",
     "collapse_panel": "收起面板",
-    "expand_panel": "展开面板"
+    "expand_panel": "展开面板",
+    "related_attractions_title": "该地区的关联景点推荐",
+    "related_attractions_empty": "该地区暂无关联景点数据"
   },
   "placeDetail": {
     "add_to_route": "添加到路线",

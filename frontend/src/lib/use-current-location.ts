@@ -45,7 +45,7 @@ export function useCurrentLocation() {
         fallbackToLastKnownOrSeoul()
         toast.warning(t('map.location_unavailable'))
       },
-      { enableHighAccuracy: true, timeout: 5000, maximumAge: 300_000 },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 300_000 },
     )
   }, [t, fallbackToLastKnownOrSeoul])
 

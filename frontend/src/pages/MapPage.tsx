@@ -148,6 +148,7 @@ export default function MapPage() {
         places={filtered}
         isLoading={isLoading}
         onSelectPlace={setSelectedPlace}
+        center={effectiveCoords}
       />
 
       <PlaceDetailSheet

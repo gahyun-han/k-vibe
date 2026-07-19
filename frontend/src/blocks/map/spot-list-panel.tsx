@@ -2,6 +2,7 @@ import { useRef, type Dispatch, type SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Heart, PanelRightClose, PanelRightOpen, Search } from 'lucide-react'
 import { CategoryFilter } from '@/blocks/map/category-filter'
+import { RelatedAttractionsList } from '@/blocks/map/related-attractions-list'
 import { LoadingSkeleton } from '@/blocks/common/loading-skeleton'
 import { CrowdBadge } from '@/blocks/common/crowd-badge'
 import { Button } from '@/components/ui/button'
@@ -28,6 +29,7 @@ interface SpotListPanelProps {
   places: Place[]
   isLoading: boolean
   onSelectPlace: (place: Place) => void
+  center: { lat: number; lng: number }
 }
 
 export function SpotListPanel({
@@ -43,6 +45,7 @@ export function SpotListPanel({
   places,
   isLoading,
   onSelectPlace,
+  center,
 }: SpotListPanelProps) {
   const { t } = useTranslation()
   const touchStartY = useRef<number | null>(null)
@@ -146,7 +149,12 @@ export function SpotListPanel({
     </div>
   )
 
-  const listRegion = <div className="min-h-0 flex-1 overflow-y-auto pb-4">{renderList()}</div>
+  const listRegion = (
+    <div className="min-h-0 flex-1 overflow-y-auto pb-4">
+      {renderList()}
+      <RelatedAttractionsList lat={center.lat} lng={center.lng} />
+    </div>
+  )
 
   return (
     <div
