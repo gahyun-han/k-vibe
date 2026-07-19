@@ -116,3 +116,69 @@ def test_find_related_attractions_falls_back_to_last_month_when_current_month_em
 def test_find_related_attractions_raises_when_api_key_missing():
     with pytest.raises(RuntimeError, match="TOUR_API_KEY"):
         tourAPI.find_related_attractions(latitude=37.5, longitude=127.0)
+
+
+@patch("externelAPI_services.tourAPI.TOUR_API_KEY", "test-key")
+@patch("externelAPI_services.tourAPI.httpx.get")
+def test_find_nearby_places_returns_parsed_list(mock_get):
+    mock_get.return_value = _mock_response(
+        {
+            "response": {
+                "body": {
+                    "items": {
+                        "item": [
+                            {
+                                "contentid": "126508",
+                                "contenttypeid": "12",
+                                "title": "경복궁",
+                                "addr1": "서울 종로구 사직로 161",
+                                "mapx": "126.9770",
+                                "mapy": "37.5796",
+                                "firstimage": "https://example.com/img.jpg",
+                                "dist": "1234.5",
+                            },
+                            {
+                                # 여행코스는 단일 지점이 아니라 제외되어야 함
+                                "contentid": "999999",
+                                "contenttypeid": "25",
+                                "title": "제외되는 여행코스",
+                                "mapx": "126.9",
+                                "mapy": "37.5",
+                            },
+                            {
+                                # 좌표 없는 항목은 제외되어야 함
+                                "contentid": "888888",
+                                "contenttypeid": "39",
+                                "title": "좌표없는 식당",
+                            },
+                        ]
+                    }
+                }
+            }
+        }
+    )
+
+    result = tourAPI.find_nearby_places(latitude=37.5796, longitude=126.977)
+
+    assert result == [
+        {
+            "id": "126508",
+            "name": "경복궁",
+            "category": "culture",
+            "address": "서울 종로구 사직로 161",
+            "lat": 37.5796,
+            "lng": 126.977,
+            "imageUrl": "https://example.com/img.jpg",
+            "distanceM": 1234,
+            "tags": [],
+        }
+    ]
+    called_params = mock_get.call_args.kwargs["params"]
+    assert called_params["mapX"] == 126.977
+    assert called_params["mapY"] == 37.5796
+
+
+@patch("externelAPI_services.tourAPI.TOUR_API_KEY", None)
+def test_find_nearby_places_raises_when_api_key_missing():
+    with pytest.raises(RuntimeError, match="TOUR_API_KEY"):
+        tourAPI.find_nearby_places(latitude=37.5, longitude=127.0)

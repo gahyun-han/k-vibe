@@ -2,6 +2,9 @@
 # - 관광지별 연관 관광지 정보 서비스(TarRlteTarService1)의 지역기반 조회(areaBasedList1)로
 #   사용자 현위치가 속한 시군구의 연관관광지 추천 목록을 조회한다(areaCd/signguCd 필요).
 #   인증키 필요(공공데이터포털에서 발급, .env의 TOUR_API_KEY).
+# - K-Vibe지도(MapPage)의 현위치 주변 관광명소는 위치기반 관광정보 조회 서비스
+#   (KorService2/locationBasedList2)를 사용한다. TarRlteTarService1과 달리 좌표
+#   (mapx/mapy)를 직접 반환하므로 지도 핀 표시가 가능하다.
 # - 편의점/약국/은행(ATM) 등 편의시설은 TourAPI에 해당 카테고리가 없어 카카오 로컬 API로
 #   조회한다 -> externelAPI_services/amenities.py 참고.
 import json
@@ -14,8 +17,21 @@ from config.configure import TOUR_API_KEY
 from externelAPI_services import kakaomap
 
 RELATED_ATTRACTIONS_AREA_BASED_URL = "https://apis.data.go.kr/B551011/TarRlteTarService1/areaBasedList1"
+LOCATION_BASED_LIST_URL = "https://apis.data.go.kr/B551011/KorService2/locationBasedList2"
 
 AREA_CODES_PATH = Path(__file__).parent / "data" / "tour_area_codes.json"
+
+# TourAPI contentTypeId -> 프론트엔드 PlaceCategory(src/types/place.ts) 매핑.
+# 25(여행코스)는 단일 지점이 아니라 조회 대상에서 제외한다(find_nearby_places 참고).
+CONTENT_TYPE_TO_CATEGORY = {
+    "12": "culture",  # 관광지
+    "14": "culture",  # 문화시설
+    "15": "fun",  # 축제공연행사
+    "28": "fun",  # 레포츠
+    "32": "stay",  # 숙박
+    "38": "fun",  # 쇼핑
+    "39": "food",  # 음식점
+}
 
 
 def _load_area_codes() -> list[dict]:
@@ -116,3 +132,73 @@ def find_related_attractions(
         if result:
             return result
     return []
+
+
+def _fetch_nearby_places_page(
+    latitude: float, longitude: float, radius: int, num_of_rows: int
+) -> list[dict]:
+    params = {
+        "serviceKey": TOUR_API_KEY,
+        "numOfRows": num_of_rows,
+        "pageNo": 1,
+        "MobileOS": "ETC",
+        "MobileApp": "KVibe",
+        "_type": "json",
+        "arrange": "E",  # 거리순 정렬 (mapX/mapY 필수)
+        "mapX": longitude,
+        "mapY": latitude,
+        "radius": min(radius, 20000),  # locationBasedList2 최대 반경
+    }
+    response = httpx.get(LOCATION_BASED_LIST_URL, params=params, timeout=5.0)
+    response.raise_for_status()
+    body = response.json().get("response", {}).get("body", {})
+    items = body.get("items", "")
+    if not items:
+        return []
+    item_list = items["item"]
+    if isinstance(item_list, dict):
+        item_list = [item_list]
+    return item_list
+
+
+def find_nearby_places(
+    latitude: float,
+    longitude: float,
+    radius: int = 10000,
+    num_of_rows: int = 30,
+) -> list[dict]:
+    """현위치 좌표 기준 반경 내 관광명소를 조회한다 (K-Vibe지도용).
+
+    프론트엔드 Place 타입(src/types/place.ts)과 필드가 1:1 대응하도록 변환해서
+    반환한다 - 백엔드 응답 형태를 바꾸지 않고 프론트가 이미 호출 중인
+    GET /places 규격을 그대로 채운다.
+    """
+    if not TOUR_API_KEY:
+        raise RuntimeError(
+            "TOUR_API_KEY 환경변수가 설정되지 않았습니다. backend/.env 파일을 확인하세요."
+        )
+
+    raw_items = _fetch_nearby_places_page(latitude, longitude, radius, num_of_rows)
+
+    places = []
+    for item in raw_items:
+        content_type_id = item.get("contenttypeid")
+        if content_type_id == "25":  # 여행코스: 단일 지점이 아니라 제외
+            continue
+        mapx, mapy = item.get("mapx"), item.get("mapy")
+        if not mapx or not mapy:
+            continue
+        places.append(
+            {
+                "id": item.get("contentid"),
+                "name": item.get("title"),
+                "category": CONTENT_TYPE_TO_CATEGORY.get(content_type_id, "culture"),
+                "address": item.get("addr1") or "",
+                "lat": float(mapy),
+                "lng": float(mapx),
+                "imageUrl": item.get("firstimage") or None,
+                "distanceM": round(float(item["dist"])) if item.get("dist") else None,
+                "tags": [],
+            }
+        )
+    return places
