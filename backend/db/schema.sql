@@ -55,19 +55,41 @@ create table userroute (
 alter table location add column if not exists latitude float8;
 alter table location add column if not exists longitude float8;
 
--- TourAPI 검색결과(contentid)를 담을 수 있도록 확장. 기존 name(PK)은 persona/docent가
--- 참조하는 K팝 루트 큐레이션 장소 도메인이라 그대로 두고, place_id는 TourAPI 검색결과
--- 전용 별도 unique key로 추가한다(한 장소가 name 기반 큐레이션 행과 place_id 기반
--- 검색결과 행 둘 다로 존재할 수 있음). route_draft_stop/saved_places가 각자 들고 있던
--- name/category/address/lat/lng/crowd_level/tags 스냅샷을 여기로 일원화한다 — 동일
--- 장소가 여러 유저의 행에 중복 저장되면 주소변경/폐업 등 실제 변경사항을 전부 따라가며
--- 갱신할 수 없어 데이터 정합성이 깨지기 때문(2026-07-21 결정).
+-- TourAPI 검색결과(contentid)를 담을 수 있도록 확장. route_draft_stop/saved_places가
+-- 각자 들고 있던 name/category/address/lat/lng/crowd_level/tags 스냅샷을 여기로
+-- 일원화한다 — 동일 장소가 여러 유저의 행에 중복 저장되면 주소변경/폐업 등 실제
+-- 변경사항을 전부 따라가며 갱신할 수 없어 데이터 정합성이 깨지기 때문(2026-07-21 결정).
 alter table location add column if not exists place_id text unique;
 alter table location add column if not exists address text;
 alter table location add column if not exists category text;
 alter table location add column if not exists image_url text;
 alter table location add column if not exists tags text[];
 alter table location add column if not exists crowd_level text;
+
+-- location의 PK를 name -> place_id로 교체(2026-07-21). 처음엔 name(PK)을 persona/docent
+-- 큐레이션 도메인 그대로 두고 place_id를 별도 unique key로만 추가했는데, upsert_place()가
+-- place_id 기준 on_conflict로 upsert해도 name이 기존 다른 행과 우연히 같은 텍스트면
+-- name(PK) unique 제약 위반으로 실패하는 버그가 있었다(예: TourAPI 검색결과 name이
+-- 기존 큐레이션 장소명과 동일한 경우). 레거시(persona/docent 전용, place_id 없던) 행은
+-- place_id = name으로 백필해서 persona/docent/userroute의 FK 컬럼 값과 앱 코드는
+-- 그대로 유지한 채 참조 대상만 location(place_id)로 옮겼다.
+-- 아래는 기존 DB에 이미 실행한 마이그레이션 기록(신규 DB라면 위 create table에서
+-- place_id를 바로 primary key로 만들 것 — 이 블록은 실행하지 말 것).
+-- update location set place_id = name where place_id is null;
+-- alter table location alter column place_id set not null;
+-- alter table persona drop constraint if exists persona_locationname_fkey;
+-- alter table docent drop constraint if exists docent_name_fkey;
+-- alter table userroute drop constraint if exists userroute_location_fkey;
+-- alter table saved_places drop constraint if exists saved_places_place_id_fkey;
+-- alter table route_draft_stop drop constraint if exists route_draft_stop_place_id_fkey;
+-- alter table location drop constraint location_pkey;
+-- alter table location drop constraint location_place_id_key;
+-- alter table location add primary key (place_id);
+-- alter table persona add constraint persona_locationname_fkey foreign key (locationname) references location(place_id);
+-- alter table docent add constraint docent_name_fkey foreign key (name) references location(place_id);
+-- alter table userroute add constraint userroute_location_fkey foreign key (location) references location(place_id);
+-- alter table saved_places add constraint saved_places_place_id_fkey foreign key (place_id) references location(place_id);
+-- alter table route_draft_stop add constraint route_draft_stop_place_id_fkey foreign key (place_id) references location(place_id);
 
 -- ============================================================
 -- 로그인 유저의 기기 간 데이터 동기화 (프론트 localStorage -> 서버 이전)
