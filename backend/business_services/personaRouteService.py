@@ -3,10 +3,13 @@ from data_repositories import locationinfo, personaCatalogInfo, personainfo
 
 
 def _normalize_db_location(row: dict, fallback_name: str) -> dict | None:
+    # location 테이블 실제 컬럼명(db/schema.sql) 기준 — latitude/longitude, crowd_level.
+    # 예전엔 lat/lng, crowdlevel을 읽고 있어서 실제 DB row가 와도 항상 None을 반환해
+    # DB 경로가 늘 하드코딩 카탈로그로 폴백되던 버그가 있었다.
     source = row or {}
     name = source.get("name") or fallback_name
-    lat = source.get("lat")
-    lng = source.get("lng")
+    lat = source.get("latitude")
+    lng = source.get("longitude")
     if lat is None or lng is None:
         return None
 
@@ -20,7 +23,7 @@ def _normalize_db_location(row: dict, fallback_name: str) -> dict | None:
         "lat": float(lat),
         "lng": float(lng),
         "category": source.get("category") or "Culture",
-        "crowdLevel": source.get("crowdlevel") or source.get("crowdLevel") or "mid",
+        "crowdLevel": source.get("crowd_level") or source.get("crowdLevel") or "mid",
         "stayMinutes": int(source.get("stayminutes") or source.get("stayMinutes") or 60),
         "description": {"ko": description, "en": description},
         "tags": source.get("tags") or [],
@@ -47,8 +50,20 @@ def _load_persona_route_from_db(persona_id: str) -> list[dict]:
         except Exception:
             location_row = None
         location = _normalize_db_location(location_row or {}, location_name)
-        if location:
-            locations.append(location)
+        if not location:
+            continue
+
+        # persona 테이블 행이 이 정거장 전용 스토리/이미지를 갖고 있으면 location 테이블의
+        # 일반 정보 대신 우선 사용한다 (예: "V"가 방문한 경복궁"이라는 페르소나 전용 서사/사진).
+        story = route_row.get("location_story")
+        if story:
+            location["description"] = {"ko": story, "en": story}
+
+        pic_path = route_row.get("location_pic")
+        if pic_path:
+            location["characterImageUrl"] = personainfo.build_pic_url(pic_path)
+
+        locations.append(location)
     return locations
 
 
